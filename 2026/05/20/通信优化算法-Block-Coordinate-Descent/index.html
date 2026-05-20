@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>通信优化算法-Block Coordinate Descent | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="BCD 算法（Block Coordinate Descent，块坐标下降法）是凸优化和大规模机器学习中非常经典且高效的一种迭代算法。 当一个优化问题的变量非常多、维度极高，或者整体求解非常困难时，BCD 的核心思想是：“分而治之”。它将高维的变量划分为若干个独立的“块”（Blocks），每次只更新其中一个块的变量，而将其他所有块的变量视为常数。  1. 核心思想与数学表达假设我们要解决一个无约束">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"moonbeats.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="BCD 算法（Block Coordinate Descent，块坐标下降法）是凸优化和大规模机器学习中非常经典且高效的一种迭代算法。 当一个优化问题的变量非常多、维度极高，或者整体求解非常困难时，BCD 的核心思想是：“分而治之”。它将高维的变量划分为若干个独立的“块”（Blocks），每次只更新其中一个块的变量，而将其他所有块的变量视为常数。  1. 核心思想与数学表达假设我们要解决一个无约束">
 <meta property="og:type" content="article">
 <meta property="og:title" content="通信优化算法-Block Coordinate Descent">
 <meta property="og:url" content="http://moonbeats.github.io/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Block-Coordinate-Descent/index.html">
@@ -17,102 +31,190 @@
 <meta property="article:modified_time" content="2026-05-19T23:51:28.606Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://moonbeats.github.io/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Block-Coordinate-Descent/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://moonbeats.github.io/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Block-Coordinate-Descent/","path":"2026/05/20/通信优化算法-Block-Coordinate-Descent/","title":"通信优化算法-Block Coordinate Descent"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>通信优化算法-Block Coordinate Descent | Hexo</title>
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+
+
+
+
+
+
+
 
   
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
 
   
+
+
+
+
+
+
   
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
 
-<meta name="generator" content="Hexo 8.1.2"></head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
         
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://moonbeats.github.io"></form>
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%E4%B8%8E%E6%95%B0%E5%AD%A6%E8%A1%A8%E8%BE%BE"><span class="nav-number">1.</span> <span class="nav-text">1. 核心思想与数学表达</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E7%9A%84-Gauss-Seidel-%E8%BD%AE%E8%AF%A2%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="nav-number">1.1.</span> <span class="nav-text">标准的 Gauss-Seidel 轮询更新策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9D%97%E9%80%89%E6%8B%A9%E7%AD%96%E7%95%A5%EF%BC%88Block-Selection%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">2. 块选择策略（Block Selection）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%94%B6%E6%95%9B%E6%80%A7%E4%B8%8E%E5%87%B8%E4%BC%98%E5%8C%96%E4%B8%AD%E7%9A%84%E6%8C%91%E6%88%98"><span class="nav-number">3.</span> <span class="nav-text">3. 收敛性与凸优化中的挑战</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%BD%E5%AE%89%E5%85%A8%E6%94%B6%E6%95%9B%E7%9A%84%E6%83%85%E5%86%B5%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">能安全收敛的情况：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E6%B3%95%E6%94%B6%E6%95%9B%E7%9A%84%E2%80%9C%E5%A4%A7%E5%9D%91%E2%80%9D%EF%BC%88%E5%8F%8D%E4%BE%8B%EF%BC%89%EF%BC%9A"><span class="nav-number">3.2.</span> <span class="nav-text">无法收敛的“大坑”（反例）：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-BCD-%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">4. BCD 的优缺点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">5.</span> <span class="nav-text">5. 典型应用场景</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+        </div>
       </div>
     </div>
-  </div>
-</header>
 
-      <div class="outer">
-        <section id="main"><article id="post-通信优化算法-Block-Coordinate-Descent" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Block-Coordinate-Descent/" class="article-date">
-  <time class="dt-published" datetime="2026-05-19T23:50:57.000Z" itemprop="datePublished">2026-05-20</time>
-</a>
     
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      通信优化算法-Block Coordinate Descent
-    </h1>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
   
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://moonbeats.github.io/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Block-Coordinate-Descent/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="通信优化算法-Block Coordinate Descent | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通信优化算法-Block Coordinate Descent
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
       
-        <p>BCD 算法（Block Coordinate Descent，块坐标下降法）是凸优化和大规模机器学习中非常经典且高效的一种迭代算法。</p>
+
+      <time title="Created: 2026-05-20 07:50:57 / Modified: 07:51:28" itemprop="dateCreated datePublished" datetime="2026-05-20T07:50:57+08:00">2026-05-20</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>BCD 算法（Block Coordinate Descent，块坐标下降法）是凸优化和大规模机器学习中非常经典且高效的一种迭代算法。</p>
 <p>当一个优化问题的变量非常多、维度极高，或者整体求解非常困难时，BCD 的核心思想是：<strong>“分而治之”</strong>。它将高维的变量划分为若干个独立的“块”（Blocks），每次只更新其中一个块的变量，而将其他所有块的变量视为常数。</p>
 <hr>
 <h2 id="1-核心思想与数学表达"><a href="#1-核心思想与数学表达" class="headerlink" title="1. 核心思想与数学表达"></a>1. 核心思想与数学表达</h2><p>假设我们要解决一个无约束优化问题：</p>
-<p>$$ \min_{x \in \mathcal{X}} f(x_1, x_2, \dots, x_m) $$</p>
-<p>其中变量 $x$ 被划分为 $m$ 个块：$x &#x3D; (x_1, x_2, \dots, x_m)$，每个 $x_i$ 可以是一个标量或一个高维向量。</p>
+<script type="math/tex; mode=display">\min_{x \in \mathcal{X}} f(x_1, x_2, \dots, x_m)</script><p>其中变量 $x$ 被划分为 $m$ 个块：$x = (x_1, x_2, \dots, x_m)$，每个 $x_i$ 可以是一个标量或一个高维向量。</p>
 <h3 id="标准的-Gauss-Seidel-轮询更新策略"><a href="#标准的-Gauss-Seidel-轮询更新策略" class="headerlink" title="标准的 Gauss-Seidel 轮询更新策略"></a>标准的 Gauss-Seidel 轮询更新策略</h3><p>在第 $k$ 次迭代中，算法按照固定的顺序（如从第 1 个块到第 $m$ 个块）依次交替优化：</p>
-<p>$$x_1^{k+1} \in \arg\min_{x_1} f(x_1, x_2^k, x_3^k, \dots, x_m^k)$$</p>
-<p>$$x_2^{k+1} \in \arg\min_{x_2} f(x_1^{k+1}, x_2, x_3^k, \dots, x_m^k)$$</p>
-<p>$$\vdots$$</p>
-<p>$$x_i^{k+1} \in \arg\min_{x_i} f(x_1^{k+1}, \dots, x_{i-1}^{k+1}, x_i, x_{i+1}^k, \dots, x_m^k)$$</p>
-<p>$$\vdots$$</p>
-<p>$$x_m^{k+1} \in \arg\min_{x_m} f(x_1^{k+1}, x_2^{k+1}, \dots, x_{m-1}^{k+1}, x_m)$$</p>
-<blockquote>
+<script type="math/tex; mode=display">x_1^{k+1} \in \arg\min_{x_1} f(x_1, x_2^k, x_3^k, \dots, x_m^k)</script><script type="math/tex; mode=display">x_2^{k+1} \in \arg\min_{x_2} f(x_1^{k+1}, x_2, x_3^k, \dots, x_m^k)</script><script type="math/tex; mode=display">\vdots</script><script type="math/tex; mode=display">x_i^{k+1} \in \arg\min_{x_i} f(x_1^{k+1}, \dots, x_{i-1}^{k+1}, x_i, x_{i+1}^k, \dots, x_m^k)</script><script type="math/tex; mode=display">\vdots</script><script type="math/tex; mode=display">x_m^{k+1} \in \arg\min_{x_m} f(x_1^{k+1}, x_2^{k+1}, \dots, x_{m-1}^{k+1}, x_m)</script><blockquote>
 <p><strong>核心点：</strong> 更新当前块 $x_i$ 时，已经更新过的块（$1 \le j &lt; i$）使用最新值 $x_j^{k+1}$，还未更新的块（$i &lt; j \le m$）使用旧值 $x_j^k$。</p>
 </blockquote>
 <hr>
-<h2 id="2-块选择策略（Block-Selection）"><a href="#2-块选择策略（Block-Selection）" class="headerlink" title="2. 块选择策略（Block Selection）"></a>2. 块选择策略（Block Selection）</h2><p>除了上述最常用的轮询（Cyclic &#x2F; Gauss-Seidel）顺序外，还有其他选择块的方式：</p>
+<h2 id="2-块选择策略（Block-Selection）"><a href="#2-块选择策略（Block-Selection）" class="headerlink" title="2. 块选择策略（Block Selection）"></a>2. 块选择策略（Block Selection）</h2><p>除了上述最常用的轮询（Cyclic / Gauss-Seidel）顺序外，还有其他选择块的方式：</p>
 <ul>
 <li><strong>随机选择（Randomized BCD）：</strong> 每一步迭代时，从 $m$ 个块中随机抽取一个进行更新。在大规模机器学习中（如坐标下降法训练线性 SVM），随机策略往往比轮询策略收敛更快、性质更好。</li>
 <li><strong>贪心选择（Gauss-Southwell）：</strong> 每次选择梯度（或偏导数）最大、或者能让目标函数下降最多的那个块进行更新。计算成本稍高，但步步见效。</li>
@@ -120,8 +222,8 @@
 <hr>
 <h2 id="3-收敛性与凸优化中的挑战"><a href="#3-收敛性与凸优化中的挑战" class="headerlink" title="3. 收敛性与凸优化中的挑战"></a>3. 收敛性与凸优化中的挑战</h2><p>BCD 算法虽然直观，但在理论收敛性上是有条件的。<strong>并不是所有的凸函数用 BCD 都能收敛到全局最优解。</strong></p>
 <h3 id="能安全收敛的情况："><a href="#能安全收敛的情况：" class="headerlink" title="能安全收敛的情况："></a>能安全收敛的情况：</h3><ol>
-<li><strong>函数严格凸且连续可微：</strong> 如果 $f(x)$ 是光滑的强凸&#x2F;严格凸函数，BCD 能够稳步收敛到全局最优解。</li>
-<li><strong>可分非光滑项：</strong> 目标函数形如 $F(x) &#x3D; f(x) + \sum_{i&#x3D;1}^m g_i(x_i)$，其中 $f$ 是光滑凸函数，而 $g_i$ 是非光滑凸函数（例如 $L_1$ 正则化项 $|x|_1$）。此时配合近端梯度（Proximal）的 BCD 依然可以收敛。</li>
+<li><strong>函数严格凸且连续可微：</strong> 如果 $f(x)$ 是光滑的强凸/严格凸函数，BCD 能够稳步收敛到全局最优解。</li>
+<li><strong>可分非光滑项：</strong> 目标函数形如 $F(x) = f(x) + \sum_{i=1}^m g_i(x_i)$，其中 $f$ 是光滑凸函数，而 $g_i$ 是非光滑凸函数（例如 $L_1$ 正则化项 $|x|_1$）。此时配合近端梯度（Proximal）的 BCD 依然可以收敛。</li>
 </ol>
 <h3 id="无法收敛的“大坑”（反例）："><a href="#无法收敛的“大坑”（反例）：" class="headerlink" title="无法收敛的“大坑”（反例）："></a>无法收敛的“大坑”（反例）：</h3><p>如果非光滑项<strong>不可分</strong>，BCD 可能会陷入死锁（Stall）。</p>
 <ul>
@@ -130,7 +232,7 @@
 <hr>
 <h2 id="4-BCD-的优缺点"><a href="#4-BCD-的优缺点" class="headerlink" title="4. BCD 的优缺点"></a>4. BCD 的优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
 <li><strong>降低计算复杂度：</strong> 将一个昂贵的高维优化问题拆解为多个廉价的低维子问题。</li>
-<li><strong>内存友好：</strong> 每次只需要加载和处理一部分数据&#x2F;变量，非常适合大数据场景。</li>
+<li><strong>内存友好：</strong> 每次只需要加载和处理一部分数据/变量，非常适合大数据场景。</li>
 <li><strong>可利用闭式解（Closed-form Solution）：</strong> 很多时候，拆分后的子问题具有解析解（例如最小二乘、软阈值算子），更新极其迅速。</li>
 </ul>
 <h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
@@ -139,104 +241,65 @@
 </ul>
 <hr>
 <h2 id="5-典型应用场景"><a href="#5-典型应用场景" class="headerlink" title="5. 典型应用场景"></a>5. 典型应用场景</h2><ul>
-<li><strong>LASSO 回归 &#x2F; $L_1$ 正则化：</strong> 每次只优化一个权重参数，子问题有闭式解（软阈值），这是 BCD 的绝佳舞台（坐标下降法）。</li>
-<li><strong>矩阵分解（Matrix Factorization &#x2F; NMF）：</strong> 固定左矩阵优化右矩阵，再固定右矩阵优化左矩阵，退化为交替最小二乘法（ALS，这是 BCD 只有两块变量时的特例）。</li>
+<li><strong>LASSO 回归 / $L_1$ 正则化：</strong> 每次只优化一个权重参数，子问题有闭式解（软阈值），这是 BCD 的绝佳舞台（坐标下降法）。</li>
+<li><strong>矩阵分解（Matrix Factorization / NMF）：</strong> 固定左矩阵优化右矩阵，再固定右矩阵优化左矩阵，退化为交替最小二乘法（ALS，这是 BCD 只有两块变量时的特例）。</li>
 <li><strong>机器学习中的多块优化：</strong> 许多带有结构化约束的问题，在引入拉格朗日乘子后，常使用基于 BCD 思想的 <strong>ADMM（交替方向乘子法）</strong> 求解。</li>
 </ul>
 
-      
     </div>
-    <footer class="article-footer">
-      <a data-url="http://moonbeats.github.io/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Block-Coordinate-Descent/" data-id="cuidLuO8TWZQcxZa7bmk2XhmQ" data-title="通信优化算法-Block Coordinate Descent" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
     </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">John Doe</span>
   </div>
-  
-    
-  
-</article>
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a></li></ul>
-    </div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
   </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Block-Coordinate-Descent/">通信优化算法-Block Coordinate Descent</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2026 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
 
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
-
-
+  </footer>
 
   
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
   </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
 </body>
 </html>
