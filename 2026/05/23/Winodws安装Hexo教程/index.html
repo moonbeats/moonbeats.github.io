@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Winodws安装Hexo教程 | 人間ではない</title><meta name="author" content="MoonBeats"><meta name="copyright" content="MoonBeats"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Windows 系统安装 Hexo 并本地跑起来的完整步骤  一、安装必备环境：Git + Node.js  1. 安装 Git  打开官网：https:&#x2F;&#x2F;git-scm.com&#x2F; 下载 Windows 版本（64位），默认安装即可，一路 Next。 验证：打开 CMD &#x2F; PowerShell，输入   bash   git --version      能显示版本号就成功。   2. 安装">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Winodws安装Hexo教程">
+<meta property="og:url" content="http://moonbeats.github.io/2026/05/23/Winodws%E5%AE%89%E8%A3%85Hexo%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="人間ではない">
+<meta property="og:description" content="Windows 系统安装 Hexo 并本地跑起来的完整步骤  一、安装必备环境：Git + Node.js  1. 安装 Git  打开官网：https:&#x2F;&#x2F;git-scm.com&#x2F; 下载 Windows 版本（64位），默认安装即可，一路 Next。 验证：打开 CMD &#x2F; PowerShell，输入   bash   git --version      能显示版本号就成功。   2. 安装">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://moonbeats.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-05-23T00:34:45.000Z">
+<meta property="article:modified_time" content="2026-05-23T00:38:33.654Z">
+<meta property="article:author" content="MoonBeats">
+<meta property="article:tag" content="教程指导">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://moonbeats.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Winodws安装Hexo教程",
+  "url": "http://moonbeats.github.io/2026/05/23/Winodws%E5%AE%89%E8%A3%85Hexo%E6%95%99%E7%A8%8B/",
+  "image": "http://moonbeats.github.io/img/butterfly-icon.png",
+  "datePublished": "2026-05-23T00:34:45.000Z",
+  "dateModified": "2026-05-23T00:38:33.654Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "MoonBeats",
+      "url": "http://moonbeats.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://moonbeats.github.io/2026/05/23/Winodws%E5%AE%89%E8%A3%85Hexo%E6%95%99%E7%A8%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Winodws安装Hexo教程',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">人間ではない</span></a><a class="nav-page-title" href="/"><span class="site-name">Winodws安装Hexo教程</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">Winodws安装Hexo教程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-05-23T00:34:45.000Z" title="发表于 2026-05-23 08:34:45">2026-05-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-05-23T00:38:33.654Z" title="更新于 2026-05-23 08:38:33">2026-05-23</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><strong>Windows 系统安装 Hexo 并本地跑起来</strong>的完整步骤</p>
+<h2 id="一-安装必备环境git-nodejs"><a class="markdownIt-Anchor" href="#一-安装必备环境git-nodejs"></a> 一、安装必备环境：Git + Node.js</h2>
+<h3 id="1-安装-git"><a class="markdownIt-Anchor" href="#1-安装-git"></a> 1. 安装 Git</h3>
+<ol>
+<li>打开官网：<a target="_blank" rel="noopener" href="https://git-scm.com/">https://git-scm.com/</a></li>
+<li>下载 Windows 版本（64位），默认安装即可，<strong>一路 Next</strong>。</li>
+<li>验证：打开 CMD / PowerShell，输入   <code>bash   git --version   </code>   能显示版本号就成功。</li>
+</ol>
+<h3 id="2-安装-nodejs含-npm"><a class="markdownIt-Anchor" href="#2-安装-nodejs含-npm"></a> 2. 安装 Node.js（含 npm）</h3>
+<ol>
+<li>官网：<a target="_blank" rel="noopener" href="https://nodejs.org/">https://nodejs.org/</a></li>
+<li>下载 <strong>LTS 长期支持版（推荐）</strong>。</li>
+<li>安装时<strong>默认勾选 Add to PATH</strong>，一路 Next。</li>
+<li>验证（重启 CMD/PowerShell 再输入）：   <code>bash   node -v   npm -v   </code>   都能输出版本号即可。</li>
+</ol>
+<h2 id="二-安装-hexo-命令行工具-打开-cmd-或-powershell"><a class="markdownIt-Anchor" href="#二-安装-hexo-命令行工具-打开-cmd-或-powershell"></a> 二、安装 Hexo 命令行工具 打开 <strong>CMD 或 PowerShell</strong>，</h2>
+<p>输入： <code>bash npm install -g hexo-cli </code></p>
+<ul>
+<li>
+<p><code>-g</code> 表示全局安装</p>
+</li>
+<li>
+<p>国内慢可以换淘宝镜像（可选）：  <code>bash  npm config set registry https://registry.npmmirror.com  </code></p>
+</li>
+</ul>
+<p>验证是否装好： <code>bash hexo -v </code> 输出版本信息即成功。</p>
+<h2 id="三-初始化博客项目"><a class="markdownIt-Anchor" href="#三-初始化博客项目"></a> 三、初始化博客项目</h2>
+<ol>
+<li>找一个盘（建议非中文路径），新建文件夹，例如：   <code>  D:\hexo-blog  </code></li>
+<li>在文件夹里打开 CMD（或地址栏输入 cmd 回车），执行：   <code>bash   hexo init   </code>   或指定目录：   <code>bash   hexo init blog   </code>   等待依赖安装完成。</li>
+<li>进入博客目录：   <code>bash   cd D:\hexo-blog   </code></li>
+<li>安装项目依赖：   <code>bash   npm install   </code></li>
+</ol>
+<h2 id="四-本地启动博客"><a class="markdownIt-Anchor" href="#四-本地启动博客"></a> 四、本地启动博客</h2>
+<p>在博客目录下执行： <code>bash hexo s # 或 hexo server </code></p>
+<ul>
+<li>看到 <code>INFO  Hexo is running at http://localhost:4000/</code> 就成功</li>
+<li>浏览器打开：<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a> 即可看到默认博客页面。</li>
+</ul>
+<p>常用命令：</p>
+<p><code>bash hexo clean   # 清除缓存 </code></p>
+<p><code>hexo generate  # 生成静态文件（简写 hexo g） </code></p>
+<p><code>hexo server    # 本地预览（简写 hexo s） </code></p>
+<p><code>hexo deploy    # 部署到服务器（需配置，简写 hexo d） </code></p>
+<h2 id="五-常见问题windows"><a class="markdownIt-Anchor" href="#五-常见问题windows"></a> 五、常见问题（Windows）</h2>
+<h3 id="1-hexo-不是内部或外部命令-原因环境变量没生效-解决-重启-cmdpowershell-或手动把-cusers你的用户名appdataroamingnpm-加入系统-path"><a class="markdownIt-Anchor" href="#1-hexo-不是内部或外部命令-原因环境变量没生效-解决-重启-cmdpowershell-或手动把-cusers你的用户名appdataroamingnpm-加入系统-path"></a> 1. “hexo 不是内部或外部命令” 原因：环境变量没生效 解决： - 重启 CMD/PowerShell - 或手动把 <code>C:\Users\你的用户名\AppData\Roaming\npm</code> 加入系统 PATH。</h3>
+<h3 id="2-npm-安装卡住报错-换淘宝镜像-bash-npm-config-set-registry-httpsregistrynpmmirrorcom-清理缓存-bash-npm-cache-clean-force"><a class="markdownIt-Anchor" href="#2-npm-安装卡住报错-换淘宝镜像-bash-npm-config-set-registry-httpsregistrynpmmirrorcom-清理缓存-bash-npm-cache-clean-force"></a> 2. npm 安装卡住/报错 - 换淘宝镜像：  <code>bash  npm config set registry https://registry.npmmirror.com  </code> - 清理缓存：  <code>bash  npm cache clean --force  </code></h3>
+<h3 id="3-中文路径导致报错-不要放在桌面-中文用户名-中文文件夹下一律用纯英文路径"><a class="markdownIt-Anchor" href="#3-中文路径导致报错-不要放在桌面-中文用户名-中文文件夹下一律用纯英文路径"></a> 3. 中文路径导致报错 <strong>不要放在桌面、中文用户名、中文文件夹下</strong>，一律用纯英文路径。</h3>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://moonbeats.github.io">MoonBeats</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://moonbeats.github.io/2026/05/23/Winodws%E5%AE%89%E8%A3%85Hexo%E6%95%99%E7%A8%8B/">http://moonbeats.github.io/2026/05/23/Winodws%E5%AE%89%E8%A3%85Hexo%E6%95%99%E7%A8%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://moonbeats.github.io" target="_blank">人間ではない</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%99%E7%A8%8B%E6%8C%87%E5%AF%BC/">教程指导</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Successive-Convex-Approximation/" title="通信优化算法-Successive Convex Approximation"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">通信优化算法-Successive Convex Approximation</div></div><div class="info-2"><div class="info-item-1">### 一、SCA 是什么 SCA（Successive Convex Approximation，逐次/连续凸近似） 是无线通信里用于求解非凸资源优化的一类迭代算法，核心是：每一步用当前点附近的凸函数近似原非凸问题，迭代求解一串凸子问题，逼近原问题的局部最优解。 通信中大量问题天然非凸： - 速率：R=log⁡(1+SINR)R=\log(1+\text{SINR})R=log(1+SINR)（关于波束/功率变量非凸） - 能效：吞吐量功率\frac{\text{吞吐量}}{\text{功率}}功率吞吐量​（分式非凸） - 多用户干扰、波束成形、功率控制、轨迹优化等 SCA 就是把它们“凸化→迭代→逼近”。 — ### 二、核心原理（通俗版） 1. 非凸 → 局部凸近似     在当前迭代点 x(k)x^{(k)}x(k) 处，对非凸函数做一阶泰勒展开，得到一个凸的下界近似：   $$   f(x)\ge \underbrace{f(x^{(k)})+\nabla f(x{(k)})\top(x-x^{(k)})}{\text{凸近似函数 }\tilde{f}(x)}   $$...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">MoonBeats</div><div class="author-info-description">人间有味是清欢</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">3</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/moonbeats"><i class="fab fa-github"></i><span>关注我</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E5%AE%89%E8%A3%85%E5%BF%85%E5%A4%87%E7%8E%AF%E5%A2%83git-nodejs"><span class="toc-number">1.</span> <span class="toc-text"> 一、安装必备环境：Git + Node.js</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85-git"><span class="toc-number">1.1.</span> <span class="toc-text"> 1. 安装 Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85-nodejs%E5%90%AB-npm"><span class="toc-number">1.2.</span> <span class="toc-text"> 2. 安装 Node.js（含 npm）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E5%AE%89%E8%A3%85-hexo-%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B7%A5%E5%85%B7-%E6%89%93%E5%BC%80-cmd-%E6%88%96-powershell"><span class="toc-number">2.</span> <span class="toc-text"> 二、安装 Hexo 命令行工具 打开 CMD 或 PowerShell，</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8D%9A%E5%AE%A2%E9%A1%B9%E7%9B%AE"><span class="toc-number">3.</span> <span class="toc-text"> 三、初始化博客项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B-%E6%9C%AC%E5%9C%B0%E5%90%AF%E5%8A%A8%E5%8D%9A%E5%AE%A2"><span class="toc-number">4.</span> <span class="toc-text"> 四、本地启动博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98windows"><span class="toc-number">5.</span> <span class="toc-text"> 五、常见问题（Windows）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-hexo-%E4%B8%8D%E6%98%AF%E5%86%85%E9%83%A8%E6%88%96%E5%A4%96%E9%83%A8%E5%91%BD%E4%BB%A4-%E5%8E%9F%E5%9B%A0%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%B2%A1%E7%94%9F%E6%95%88-%E8%A7%A3%E5%86%B3-%E9%87%8D%E5%90%AF-cmdpowershell-%E6%88%96%E6%89%8B%E5%8A%A8%E6%8A%8A-cusers%E4%BD%A0%E7%9A%84%E7%94%A8%E6%88%B7%E5%90%8Dappdataroamingnpm-%E5%8A%A0%E5%85%A5%E7%B3%BB%E7%BB%9F-path"><span class="toc-number">5.1.</span> <span class="toc-text"> 1. “hexo 不是内部或外部命令” 原因：环境变量没生效 解决： - 重启 CMD&#x2F;PowerShell - 或手动把 C:\Users\你的用户名\AppData\Roaming\npm 加入系统 PATH。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-npm-%E5%AE%89%E8%A3%85%E5%8D%A1%E4%BD%8F%E6%8A%A5%E9%94%99-%E6%8D%A2%E6%B7%98%E5%AE%9D%E9%95%9C%E5%83%8F-bash-npm-config-set-registry-httpsregistrynpmmirrorcom-%E6%B8%85%E7%90%86%E7%BC%93%E5%AD%98-bash-npm-cache-clean-force"><span class="toc-number">5.2.</span> <span class="toc-text"> 2. npm 安装卡住&#x2F;报错 - 换淘宝镜像：  bash  npm config set registry https:&#x2F;&#x2F;registry.npmmirror.com   - 清理缓存：  bash  npm cache clean --force  </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%B8%AD%E6%96%87%E8%B7%AF%E5%BE%84%E5%AF%BC%E8%87%B4%E6%8A%A5%E9%94%99-%E4%B8%8D%E8%A6%81%E6%94%BE%E5%9C%A8%E6%A1%8C%E9%9D%A2-%E4%B8%AD%E6%96%87%E7%94%A8%E6%88%B7%E5%90%8D-%E4%B8%AD%E6%96%87%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B%E4%B8%80%E5%BE%8B%E7%94%A8%E7%BA%AF%E8%8B%B1%E6%96%87%E8%B7%AF%E5%BE%84"><span class="toc-number">5.3.</span> <span class="toc-text"> 3. 中文路径导致报错 不要放在桌面、中文用户名、中文文件夹下，一律用纯英文路径。</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/23/Winodws%E5%AE%89%E8%A3%85Hexo%E6%95%99%E7%A8%8B/" title="Winodws安装Hexo教程">Winodws安装Hexo教程</a><time datetime="2026-05-23T00:34:45.000Z" title="发表于 2026-05-23 08:34:45">2026-05-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Successive-Convex-Approximation/" title="通信优化算法-Successive Convex Approximation">通信优化算法-Successive Convex Approximation</a><time datetime="2026-05-20T13:44:00.000Z" title="发表于 2026-05-20 21:44:00">2026-05-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/05/20/%E9%80%9A%E4%BF%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95-Block-Coordinate-Descent/" title="通信优化算法-Block Coordinate Descent">通信优化算法-Block Coordinate Descent</a><time datetime="2026-05-19T23:50:57.000Z" title="发表于 2026-05-20 07:50:57">2026-05-20</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By MoonBeats</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.4"></script><script src="/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
